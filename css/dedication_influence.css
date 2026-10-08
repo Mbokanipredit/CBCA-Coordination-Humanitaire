@@ -1,0 +1,375 @@
+/* ===================================================
+   CBCA Donation Section Styles - Restored Proportions
+   =================================================== */
+
+section.breadcrumb {
+  margin-bottom: 0 !important;
+  border-bottom: none !important;
+}
+
+.dedication_influence_section {
+  position: relative;
+  padding: 50px 0 45px 0;
+  margin-top: 0 !important;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  background-image: url('../images/donation_bg_shapes.webp'), linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  border-top: none;
+  border-bottom: 1px solid rgba(0, 159, 227, 0.08);
+  overflow: hidden;
+}
+
+/* Subtle decorative watermark elements */
+.dedication_influence_section::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 280px;
+  height: 280px;
+  background-image: url('../images/hand_shapes.webp');
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.dedication_influence_section .section_heading {
+  margin-bottom: 30px;
+}
+
+.dedication_influence_section .section_heading h5 {
+  color: var(--colorPrimary, #009fe3);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.dedication_influence_section .section_heading h2 {
+  font-size: 38px;
+  font-weight: 800;
+  color: var(--colorBlack, #0b1d33);
+}
+
+/* Tabs Left Side */
+.dedication_tabs_wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+.dedication_tab_item {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  padding: 18px 24px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 159, 227, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  user-select: none;
+}
+
+.dedication_tab_item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 159, 227, 0.2);
+}
+
+.dedication_tab_item .tab_icon_box {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: 14px;
+  background: rgba(0, 159, 227, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 18px;
+  transition: all 0.3s ease;
+}
+
+.dedication_tab_item .tab_icon_box i {
+  font-size: 22px;
+  color: #009fe3;
+  transition: all 0.3s ease;
+}
+
+.dedication_tab_item .tab_title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b1d33;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+/* Active Tab Styling - CBCA Red */
+.dedication_tab_item.active {
+  background: #e30613;
+  box-shadow: 0 14px 35px rgba(227, 6, 19, 0.32);
+  transform: scale(1.02);
+  border-color: #e30613;
+}
+
+.dedication_tab_item.active .tab_icon_box {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.dedication_tab_item.active .tab_icon_box i {
+  color: #ffffff;
+}
+
+.dedication_tab_item.active .tab_title {
+  color: #ffffff;
+}
+
+/* Connector Dot & Line indicator for active tab on desktop */
+.dedication_tab_item.active::after {
+  content: '';
+  position: absolute;
+  right: -24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  background: #e30613;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.3);
+  z-index: 10;
+}
+
+@media (max-width: 991px) {
+  .dedication_tab_item.active::after {
+    display: none;
+  }
+}
+
+/* Hero Showcase Card Right Side - CBCA Deep Navy Blue */
+.dedication_hero_card {
+  background: #0b2545;
+  border-radius: 28px;
+  padding: 34px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(11, 37, 69, 0.25);
+  color: #ffffff;
+  min-height: 440px;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+
+/* Background watermark SVG patterns */
+.dedication_hero_card::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 180px;
+  height: 180px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1.5'%3E%3Cpath d='M30 50 C 30 30, 70 30, 70 50 C 70 70, 30 70, 30 50 Z'/%3E%3Cpath d='M20 40 C 20 20, 80 20, 80 40'/%3E%3Cpath d='M20 60 C 20 80, 80 80, 80 60'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* Scribble graphic on bottom right */
+.dedication_scribble {
+  position: absolute;
+  bottom: 25px;
+  right: 35px;
+  width: 85px;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.dedication_card_img_wrapper {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  height: 100%;
+  min-height: 360px;
+}
+
+.dedication_card_img {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Content details side inside dark card */
+.dedication_content_box {
+  padding-left: 15px;
+}
+
+@media (max-width: 991px) {
+  .dedication_content_box {
+    padding-left: 0;
+    margin-top: 25px;
+  }
+}
+
+.dedication_badge_icon {
+  width: 54px;
+  height: 54px;
+  background: #e30613;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 20px rgba(227, 6, 19, 0.35);
+}
+
+.dedication_badge_icon i {
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.dedication_card_title {
+  font-size: 30px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+
+.dedication_card_desc {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 22px;
+}
+
+.dedication_checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px 0;
+}
+
+.dedication_checklist li {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 10px;
+}
+
+.dedication_checklist li i {
+  color: #e30613;
+  font-size: 14px;
+  margin-right: 12px;
+  background: rgba(227, 6, 19, 0.18);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(227, 6, 19, 0.4);
+}
+
+/* Donate Now Button - CBCA Red */
+.btn_donate_now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e30613;
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 34px;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px rgba(227, 6, 19, 0.4);
+  border: none;
+}
+
+.btn_donate_now i {
+  margin-left: 10px;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.btn_donate_now:hover {
+  background: #c40410;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(227, 6, 19, 0.55);
+}
+
+.btn_donate_now:hover i {
+  transform: translate(3px, -3px);
+}
+
+/* Bottom Stat Counters Row */
+.dedication_stats_wrapper {
+  margin-top: 35px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 159, 227, 0.08);
+  position: relative;
+  z-index: 2;
+}
+
+.dedication_stat_item {
+  text-align: left;
+  padding: 10px 20px;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .dedication_stat_item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background: #e2e8f0;
+  }
+}
+
+.dedication_stat_number {
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  letter-spacing: -1px;
+}
+
+.dedication_stat_number.blue_val {
+  color: #009fe3;
+}
+
+.dedication_stat_number.red_val {
+  color: #e30613;
+}
+
+.dedication_stat_number .plus_sign {
+  font-size: 36px;
+  font-weight: 800;
+  margin-left: 2px;
+}
+
+.dedication_stat_label {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #4a505c;
+  margin: 0;
+}

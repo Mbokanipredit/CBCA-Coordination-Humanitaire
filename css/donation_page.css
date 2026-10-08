@@ -1,0 +1,339 @@
+/* ===================================================
+   CBCA Donation Form & Page Styles - Intent & Outreach
+   =================================================== */
+
+.donation_page_wrapper {
+  padding: 40px 0 60px 0;
+  margin-top: 0 !important;
+  background: #f8fafc;
+}
+
+/* Informative Info Banner */
+.donation_info_banner {
+  background: rgba(0, 159, 227, 0.08);
+  border: 1px solid rgba(0, 159, 227, 0.2);
+  border-radius: 18px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.donation_info_banner .info_icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: 50%;
+  background: #009fe3;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  font-size: 18px;
+}
+
+.donation_info_banner p {
+  margin: 0;
+  font-size: 14.5px;
+  color: #1e293b;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.donation_info_banner p strong {
+  color: #0b1d33;
+  font-weight: 700;
+}
+
+/* Main Form Card */
+.donation_main_card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 36px 40px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 30px;
+}
+
+.donation_main_card h3.section_title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0b1d33;
+  margin-bottom: 20px;
+}
+
+/* Need Amount Header Banner Pill */
+.need_amount_banner {
+  background: #e30613;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+  text-align: center;
+  padding: 12px 24px;
+  border-radius: 50px;
+  margin-bottom: 22px;
+  box-shadow: 0 8px 20px rgba(227, 6, 19, 0.25);
+}
+
+/* Preset Amount Buttons Grid */
+.preset_amounts_grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.preset_amount_btn {
+  flex: 1 1 calc(16.66% - 10px);
+  min-width: 80px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 18px;
+  border-radius: 50px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.preset_amount_btn:hover {
+  border-color: #e30613;
+  color: #e30613;
+  transform: translateY(-2px);
+}
+
+.preset_amount_btn.active {
+  background: #e30613;
+  border-color: #e30613;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(227, 6, 19, 0.3);
+}
+
+/* Custom Amount Input Container */
+.custom_amount_input_wrapper {
+  display: none;
+  margin-bottom: 24px;
+  animation: fadeIn 0.3s ease;
+}
+
+.custom_amount_input_wrapper.show {
+  display: block;
+}
+
+.custom_amount_input_wrapper .input-group-text {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-right: none;
+  border-radius: 14px 0 0 14px;
+  color: #0b1d33;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 0 18px;
+}
+
+.custom_amount_input_wrapper .form-control {
+  border-radius: 0 14px 14px 0;
+  border-left: none;
+}
+
+/* Form Section Divider */
+.donation_form_divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 28px 0;
+}
+
+/* Payment / Contribution Method Radios Grid */
+.contribution_methods_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.contribution_radio_card {
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 14px 18px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.contribution_radio_card:hover {
+  border-color: #009fe3;
+  background: #ffffff;
+}
+
+.contribution_radio_card input[type="radio"] {
+  accent-color: #e30613;
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.contribution_radio_card .method_label {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+/* Custom Form Control Styling */
+.donation_form_group {
+  margin-bottom: 20px;
+}
+
+.donation_form_group label {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.donation_form_control {
+  width: 100%;
+  padding: 13px 20px;
+  font-size: 15px;
+  color: #1e293b;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 50px;
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.donation_form_control:focus {
+  border-color: #009fe3;
+  box-shadow: 0 0 0 4px rgba(0, 159, 227, 0.12);
+}
+
+textarea.donation_form_control {
+  border-radius: 18px;
+  min-height: 110px;
+  resize: vertical;
+}
+
+/* Bottom Form Footer Row */
+.donation_form_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.donation_total_display {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0b1d33;
+}
+
+.donation_total_display span {
+  font-size: 22px;
+  font-weight: 900;
+  color: #e30613;
+}
+
+/* Sidebar Campaign Card */
+.sidebar_campaign_card {
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e2e8f0;
+  margin-bottom: 24px;
+}
+
+.sidebar_campaign_card .card_img_box {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.sidebar_campaign_card .card_img_box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar_campaign_card .card_body {
+  padding: 22px 22px 26px 22px;
+}
+
+.sidebar_campaign_card .card_title {
+  font-size: 19px;
+  font-weight: 800;
+  color: #0b1d33;
+  margin-bottom: 18px;
+  line-height: 1.35;
+}
+
+/* Direct Contact Info Box */
+.sidebar_contact_info_box {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+}
+
+.sidebar_contact_info_box h4 {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0b1d33;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e30613;
+}
+
+.contact_detail_item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.contact_detail_item .icon {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 10px;
+  background: rgba(0, 159, 227, 0.1);
+  color: #009fe3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 15px;
+}
+
+.contact_detail_item .text {
+  font-size: 14px;
+  color: #475569;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.contact_detail_item .text strong {
+  color: #0b1d33;
+  display: block;
+}
+
+.contact_detail_item .text a {
+  color: #009fe3;
+  text-decoration: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
