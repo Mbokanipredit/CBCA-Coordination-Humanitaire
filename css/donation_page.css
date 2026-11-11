@@ -337,3 +337,104 @@ textarea.donation_form_control {
   from { opacity: 0; transform: translateY(-6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Responsive Breakpoints for Donation Form Page */
+@media (max-width: 991.98px) {
+  .donation_main_card {
+    padding: 28px 24px;
+  }
+
+  .preset_amount_btn {
+    flex: 1 1 calc(33.333% - 10px);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .donation_page_wrapper {
+    padding: 25px 0 40px 0;
+  }
+
+  .donation_info_banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .donation_info_banner .info_icon {
+    margin-right: 0;
+  }
+
+  .donation_info_banner p {
+    font-size: 13.5px;
+  }
+
+  .donation_main_card {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .donation_main_card h3.section_title {
+    font-size: 17.5px;
+    margin-bottom: 14px;
+  }
+
+  .need_amount_banner {
+    font-size: 14.5px;
+    padding: 10px 16px;
+    border-radius: 14px;
+  }
+
+  .preset_amounts_grid {
+    gap: 8px;
+  }
+
+  .preset_amount_btn {
+    flex: 1 1 calc(50% - 6px);
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .preset_amount_btn[data-amount="custom"] {
+    flex: 1 1 100%;
+  }
+
+  .contribution_methods_grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .contribution_radio_card {
+    padding: 12px 14px;
+  }
+
+  .contribution_radio_card .method_label {
+    font-size: 13.5px;
+  }
+
+  .donation_form_control {
+    padding: 11px 16px;
+    font-size: 14.5px;
+  }
+
+  .donation_form_footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .donation_form_footer .btn_donate_now {
+    width: 100%;
+    order: 2;
+  }
+
+  .donation_total_display {
+    order: 1;
+    font-size: 16px;
+  }
+
+  .sidebar_campaign_card .card_body,
+  .sidebar_contact_info_box {
+    padding: 18px 16px;
+  }
+}

@@ -373,3 +373,142 @@ section.breadcrumb {
   color: #4a505c;
   margin: 0;
 }
+
+/* Responsive Breakpoints for Dedication & Showcase Section */
+@media (max-width: 991.98px) {
+  .dedication_influence_section {
+    padding: 40px 0 35px 0;
+  }
+
+  .dedication_influence_section .section_heading h2 {
+    font-size: 30px;
+  }
+
+  .dedication_hero_card {
+    padding: 26px;
+    min-height: auto;
+    margin-top: 10px;
+  }
+
+  .dedication_card_img_wrapper,
+  .dedication_card_img {
+    min-height: 280px;
+    max-height: 340px;
+  }
+
+  .dedication_card_title {
+    font-size: 25px;
+  }
+
+  .dedication_stat_number {
+    font-size: 40px;
+  }
+
+  .dedication_stat_number .plus_sign {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .dedication_influence_section {
+    padding: 32px 0 28px 0;
+  }
+
+  .dedication_influence_section .section_heading h5 {
+    font-size: 13.5px;
+  }
+
+  .dedication_influence_section .section_heading h2 {
+    font-size: 23px;
+    line-height: 1.3;
+  }
+
+  .dedication_tab_item {
+    padding: 13px 16px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+  }
+
+  .dedication_tab_item .tab_icon_box {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    margin-right: 12px;
+    border-radius: 12px;
+  }
+
+  .dedication_tab_item .tab_icon_box i {
+    font-size: 18px;
+  }
+
+  .dedication_tab_item .tab_title {
+    font-size: 15.5px;
+  }
+
+  .dedication_hero_card {
+    padding: 18px 16px;
+    border-radius: 20px;
+  }
+
+  .dedication_card_img_wrapper,
+  .dedication_card_img {
+    min-height: 210px;
+    max-height: 240px;
+    border-radius: 14px;
+  }
+
+  .dedication_badge_icon {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 14px;
+  }
+
+  .dedication_card_title {
+    font-size: 21px;
+  }
+
+  .dedication_card_desc {
+    font-size: 14.5px;
+    margin-bottom: 16px;
+  }
+
+  .dedication_checklist li {
+    font-size: 14px;
+    align-items: flex-start;
+  }
+
+  .dedication_checklist li i {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .btn_donate_now {
+    width: 100%;
+    padding: 13px 20px;
+    font-size: 15px;
+  }
+
+  .dedication_stats_wrapper {
+    margin-top: 24px;
+    padding: 18px 12px;
+    border-radius: 18px;
+  }
+
+  .dedication_stat_item {
+    text-align: center;
+    padding: 10px 6px;
+  }
+
+  .dedication_stat_number {
+    font-size: 32px;
+    justify-content: center;
+  }
+
+  .dedication_stat_number .plus_sign {
+    font-size: 22px;
+  }
+
+  .dedication_stat_label {
+    font-size: 13px;
+  }
+}

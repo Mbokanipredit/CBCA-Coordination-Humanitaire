@@ -3644,3 +3644,324 @@
     padding: 30px;
   }
 }
+
+/* ============================================================================
+   CBCA Global Multi-Device Responsive Enhancements (Desktop, Laptop, Tablet, Mobile)
+   ============================================================================ */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Preserve aspect ratio for logos & partner badges across all devices */
+.main_menu .navbar-brand img,
+.footer_logo img,
+.category_page .category_item .img img,
+.single_brand img {
+  object-fit: contain !important;
+}
+
+.category_page .category_item .img img {
+  padding: 16px;
+}
+
+/* Make embedded Google Maps responsive on every viewport */
+.contact_map iframe,
+.event_map iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Prevent long email addresses / URLs from overflowing cards */
+.contact_info p,
+.contact_info a,
+.footer_contact a,
+.dashboard_profile_info li,
+.dashboard_email_change p a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.dashboard_profile_info li {
+  text-transform: none !important;
+}
+
+/* 1. Large Laptops & Standard Desktops (1200px – 1599.98px): Fit all 11 nav links + CTA */
+@media (min-width: 1200px) and (max-width: 1599.98px) {
+  header .header_info {
+    gap: 6px 20px;
+  }
+
+  header .header_info li,
+  header .header_info a {
+    font-size: 13.5px;
+  }
+
+  .main_menu .navbar-brand {
+    width: 155px;
+    margin-right: 12px;
+  }
+
+  .main_menu .navbar-nav {
+    gap: 10px;
+    margin-left: 8px !important;
+  }
+
+  .main_menu .navbar-nav .nav-item .nav-link {
+    font-size: 13.5px;
+  }
+
+  .main_menu .menu_right {
+    gap: 10px;
+  }
+
+  .main_menu .menu_right .common_btn {
+    padding: 12px 32px 11px 18px;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+
+  .main_menu .menu_right .user_icon,
+  .main_menu .menu_right .user_icon .user_link {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    padding: 0 10px;
+  }
+}
+
+/* 2. Compact Laptops & Landscape Tablets (992px – 1199.98px): Keep navbar on 1 row */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  header .header_info {
+    gap: 4px 12px;
+  }
+
+  header .header_info li,
+  header .header_info a {
+    font-size: 12px;
+  }
+
+  .header_right {
+    gap: 8px 20px;
+  }
+
+  .header_right .icon {
+    padding-right: 20px;
+    gap: 0 14px;
+  }
+
+  .main_menu .navbar-brand {
+    width: 125px;
+    margin-right: 8px;
+  }
+
+  .main_menu .navbar-nav {
+    gap: 7px;
+    margin-left: 4px !important;
+  }
+
+  .main_menu .navbar-nav .nav-item .nav-link {
+    font-size: 11.8px;
+  }
+
+  .main_menu .menu_right {
+    gap: 8px;
+  }
+
+  .main_menu .menu_right .common_btn {
+    padding: 10px 26px 9px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .main_menu .menu_right .common_btn::after {
+    right: 11px;
+    font-size: 11px;
+  }
+
+  .main_menu .menu_right .user_icon,
+  .main_menu .menu_right .user_icon .user_link {
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 8px;
+  }
+}
+
+/* 3. Tablets & Mobile Navigation Drawer (< 991.98px) */
+@media (max-width: 991.98px) {
+  .main_menu {
+    height: auto;
+    min-height: 72px;
+    top: 37px;
+  }
+
+  .main_menu.menu_fix {
+    top: 0;
+  }
+
+  .main_menu > .container-fluid {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .main_menu .navbar-brand {
+    width: 155px;
+    height: 60px;
+    margin: 0;
+  }
+
+  .main_menu .navbar-brand img {
+    max-height: 54px !important;
+  }
+
+  .main_menu .navbar-toggler {
+    margin-right: 0;
+  }
+
+  .main_menu .navbar-collapse {
+    background: var(--colorBlack);
+    border-radius: 14px;
+    margin-top: 8px;
+    max-height: calc(100vh - 115px);
+    overflow-y: auto;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  }
+
+  .main_menu .navbar-nav {
+    margin-left: 0 !important;
+    padding: 18px 20px 12px 20px;
+    gap: 12px;
+  }
+
+  .main_menu .navbar-nav .nav-item .nav-link {
+    font-size: 15.5px;
+    padding: 4px 0;
+    display: block;
+  }
+
+  .main_menu .menu_right {
+    padding: 14px 20px 18px 20px;
+    justify-content: space-between;
+    border-bottom: none;
+  }
+
+  /* Secondary page Donation CTA box responsiveness */
+  .video_donate_text h2 {
+    font-size: clamp(22px, 4.5vw, 30px) !important;
+  }
+
+  .video_donation_box {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .video_donation_box ul {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+/* 4. Mobile Phones (< 767.98px) */
+@media (max-width: 767.98px) {
+  .banner,
+  .banner_slider,
+  .banner .slick-list,
+  .banner .slick-track,
+  .banner .slick-slide,
+  .banner .slick-slide > div,
+  .banner_slider_item,
+  .banner_overlay {
+    min-height: 560px !important;
+    height: auto !important;
+  }
+
+  .banner_text {
+    padding-top: 135px;
+    padding-bottom: 65px;
+    padding-right: 0;
+  }
+
+  .banner_text h1 {
+    font-size: clamp(26px, 7vw, 38px);
+    line-height: 1.25;
+  }
+
+  .banner_text p {
+    max-width: 100%;
+    font-size: 15px;
+    margin-bottom: 30px;
+  }
+
+  .breadcrumb_overlay {
+    padding: 155px 0 65px 0;
+  }
+
+  .breadcrumb_text h1 {
+    font-size: clamp(24px, 6.5vw, 34px);
+    margin-bottom: 12px;
+  }
+
+  .breadcrumb_text ul {
+    gap: 18px;
+  }
+
+  /* Media tabs (Photos / Vidéos / Témoignages) */
+  #mediaTab {
+    gap: 8px !important;
+  }
+
+  #mediaTab .nav-link {
+    padding: 10px 18px !important;
+    font-size: 13px !important;
+  }
+
+  /* Dashboard mobile spacing */
+  .dashboard_contant_top,
+  .dashboard_profile,
+  .dashboard_profile_update,
+  .dashboard_email_change,
+  .dashboard_password_change {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .dashboard_profile_info li {
+    padding: 12px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+
+  .dashboard_profile_info li span {
+    width: 120px;
+    flex-shrink: 0;
+  }
+
+  /* Contact form & info cards */
+  .contact_info {
+    padding: 24px 20px 24px 72px;
+  }
+
+  .contact_form form {
+    padding: 22px 16px;
+  }
+}
+
+/* 5. Small Mobile Phones (< 400px) */
+@media (max-width: 399.98px) {
+  .main_menu .navbar-brand {
+    width: 135px;
+  }
+
+  .common_btn {
+    padding: 14px 34px 13px 20px;
+    font-size: 13px;
+  }
+
+  .dashboard_profile_info li span {
+    width: 100%;
+  }
+}
