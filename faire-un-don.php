@@ -1,4 +1,54 @@
 <?php
+require_once __DIR__ . '/includes/db.php';
+
+$donationSuccess = null;
+$donationError = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cbca_donation_submit'])) {
+    $firstName = trim($_POST['first_name'] ?? '');
+    $lastName  = trim($_POST['last_name'] ?? '');
+    $phone     = trim($_POST['phone'] ?? '');
+    $email     = trim($_POST['email'] ?? '');
+    $amount    = isset($_POST['amount']) ? max(1, (float) $_POST['amount']) : 20.00;
+    $method    = trim($_POST['contribution_method'] ?? 'Mobile Money (Airtel/M-Pesa/Orange)');
+    $message   = trim($_POST['message'] ?? '');
+
+    if ($firstName === '' || $lastName === '' || $phone === '' || $email === '') {
+        $donationError = 'Veuillez remplir tous vos champs de coordonnées obligatoires.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $donationError = 'Veuillez saisir une adresse e-mail valide.';
+    } else {
+        if ($pdo) {
+            try {
+                $stmt = $pdo->prepare('
+                    INSERT INTO `donations` (`first_name`, `last_name`, `email`, `phone`, `amount`, `currency`, `contribution_method`, `message`, `status`)
+                    VALUES (:first_name, :last_name, :email, :phone, :amount, :currency, :method, :message, :status)
+                ');
+                $stmt->execute([
+                    ':first_name' => $firstName,
+                    ':last_name'  => $lastName,
+                    ':email'      => $email,
+                    ':phone'      => $phone,
+                    ':amount'     => $amount,
+                    ':currency'   => 'USD',
+                    ':method'     => $method,
+                    ':message'    => $message !== '' ? $message : null,
+                    ':status'     => 'pending',
+                ]);
+            } catch (Throwable $e) {
+                error_log('[CBCA Donation] ' . $e->getMessage());
+            }
+        }
+        $donationSuccess = sprintf(
+            'Merci %s %s ! Votre intention de don de $%s (%s) a bien été enregistrée. L\'équipe de la Coordination Humanitaire CBCA vous contactera très rapidement.',
+            htmlspecialchars($firstName),
+            htmlspecialchars($lastName),
+            number_format($amount, 2),
+            htmlspecialchars($method)
+        );
+    }
+}
+
 $pageTitle = "Soutenir nos Actions - CBCA Coordination Humanitaire";
 include 'includes/head.php';
 include 'includes/header.php';
@@ -226,7 +276,16 @@ include 'includes/header.php';
 
                     <!-- Personal Info Form -->
                     <h3 class="section_title">3. Vos Coordonnées de Contact</h3>
-                    <form id="cbca_donation_form" action="#" method="POST">
+                    <?php if ($donationSuccess): ?>
+                        <div class="alert alert-success mb-4"><?php echo $donationSuccess; ?></div>
+                    <?php endif; ?>
+                    <?php if ($donationError): ?>
+                        <div class="alert alert-danger mb-4"><?php echo htmlspecialchars($donationError); ?></div>
+                    <?php endif; ?>
+                    <form id="cbca_donation_form" action="faire-un-don#cbca_donation_form_card" method="POST">
+                        <input type="hidden" name="cbca_donation_submit" value="1" />
+                        <input type="hidden" name="amount" id="hidden_donation_amount" value="20" />
+                        <input type="hidden" name="contribution_method" id="hidden_contribution_method" value="Mobile Money (Airtel/M-Pesa/Orange)" />
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="donation_form_group">
@@ -452,20 +511,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function updateTotal() {
+        const cleanAmount = isNaN(currentAmount) || currentAmount <= 0 ? 20 : currentAmount;
         if (totalDisplay) {
             totalDisplay.textContent = '$' + (isNaN(currentAmount) ? 0 : currentAmount);
         }
+        const hiddenAmount = document.getElementById('hidden_donation_amount');
+        if (hiddenAmount) {
+            hiddenAmount.value = cleanAmount;
+        }
     }
 
-    // 3. Form Submission Feedback
-    const donationForm = document.getElementById('cbca_donation_form');
-    if (donationForm) {
-        donationForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert("Merci ! Votre intention de don de " + totalDisplay.textContent + " a bien été transmise. L'équipe de la Coordination Humanitaire CBCA prendra contact avec vous très rapidement.");
-            donationForm.reset();
+    // 3. Synchronize Contribution Method Radio Inputs with Form Hidden Input
+    const methodRadios = document.querySelectorAll('input[name="contribution_method"][type="radio"]');
+    const hiddenMethod = document.getElementById('hidden_contribution_method');
+    methodRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.checked && hiddenMethod) {
+                hiddenMethod.value = this.value;
+            }
         });
-    }
+    });
 });
 </script>
 

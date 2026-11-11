@@ -1,4 +1,60 @@
 <?php
+require_once __DIR__ . '/includes/db.php';
+
+$securitySuccess = null;
+$securityError = null;
+$currentUser = cbca_get_current_user($pdo);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cbca_email_update'])) {
+    $newEmail = trim($_POST['new_email'] ?? '');
+    if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+        $securityError = 'Veuillez saisir une nouvelle adresse email valide.';
+    } elseif ($pdo) {
+        try {
+            $stmt = $pdo->prepare('UPDATE `users` SET `email` = :email WHERE `id` = :id');
+            $stmt->execute([':email' => $newEmail, ':id' => (int) $currentUser['id']]);
+            $currentUser = cbca_get_current_user($pdo);
+            $securitySuccess = 'Votre adresse email a bien été mise à jour.';
+        } catch (Throwable $e) {
+            $securityError = 'Impossible de mettre à jour l\'email (cette adresse est peut-être déjà utilisée).';
+        }
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cbca_password_update'])) {
+    $currentPassword = $_POST['current_password'] ?? '';
+    $newPassword     = $_POST['new_password'] ?? '';
+    $confirmPassword = $_POST['confirm_password'] ?? '';
+
+    if ($currentPassword === '' || $newPassword === '' || $confirmPassword === '') {
+        $securityError = 'Veuillez remplir tous les champs de mot de passe.';
+    } elseif (strlen($newPassword) < 6) {
+        $securityError = 'Le nouveau mot de passe doit contenir au moins 6 caractères.';
+    } elseif ($newPassword !== $confirmPassword) {
+        $securityError = 'La confirmation du nouveau mot de passe ne correspond pas.';
+    } elseif ($pdo) {
+        try {
+            $stmt = $pdo->prepare('SELECT `password_hash` FROM `users` WHERE `id` = :id LIMIT 1');
+            $stmt->execute([':id' => (int) $currentUser['id']]);
+            $row = $stmt->fetch();
+            if ($row && password_verify($currentPassword, $row['password_hash'])) {
+                $upd = $pdo->prepare('UPDATE `users` SET `password_hash` = :hash WHERE `id` = :id');
+                $upd->execute([
+                    ':hash' => password_hash($newPassword, PASSWORD_DEFAULT),
+                    ':id'   => (int) $currentUser['id'],
+                ]);
+                $securitySuccess = 'Votre mot de passe a bien été mis à jour.';
+            } else {
+                $securityError = 'Le mot de passe actuel est incorrect.';
+            }
+        } catch (Throwable $e) {
+            $securityError = 'Une erreur est survenue lors de la mise à jour du mot de passe.';
+        }
+    }
+}
+
+$fullName = trim($currentUser['first_name'] . ' ' . $currentUser['last_name']);
+
 $pageTitle = "CBCA - Coordination Humanitaire";
 include 'includes/head.php';
 include 'includes/header.php';
@@ -36,9 +92,9 @@ include 'includes/header.php';
                                 <img src="images/single_topic_sidebar_banner.webp" alt="img" class="img-fluid">
                             </div>
                             <div class="img">
-                                <img src="images/dashboard_profile_img.webp" alt="profile" class="img-fluid w-100">
+                                <img src="<?php echo htmlspecialchars($currentUser['avatar'] ?: 'images/dashboard_profile_img.webp'); ?>" alt="profile" class="img-fluid w-100">
                             </div>
-                            <h4>Jean Kabanga</h4>
+                            <h4><?php echo htmlspecialchars($fullName); ?></h4>
                         </div>
                         <ul class="dashboard_sidebar_menu">
                             <li>
@@ -66,7 +122,7 @@ include 'includes/header.php';
                                 </a>
                             </li>
                             <li>
-                                <a href="sign_in">
+                                <a href="sign_in?logout=1">
                                     <div class="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -89,15 +145,23 @@ include 'includes/header.php';
                             </div>
                         </div>
 
+                        <?php if ($securitySuccess): ?>
+                            <div class="alert alert-success mb-3"><?php echo htmlspecialchars($securitySuccess); ?></div>
+                        <?php endif; ?>
+                        <?php if ($securityError): ?>
+                            <div class="alert alert-danger mb-3"><?php echo htmlspecialchars($securityError); ?></div>
+                        <?php endif; ?>
+
                         <div class="dashboard_email_change">
                             <h6>Adresse Email</h6>
-                            <p>Votre adresse email actuelle est <a href="mailto:coordhum.cbca@gmail.com">coordhum.cbca@gmail.com</a></p>
-                            <form action="#">
+                            <p>Votre adresse email actuelle est <a href="mailto:<?php echo htmlspecialchars($currentUser['email']); ?>"><?php echo htmlspecialchars($currentUser['email']); ?></a></p>
+                            <form action="dashboard_change_password" method="POST">
+                                <input type="hidden" name="cbca_email_update" value="1">
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="dashboard_email_change_input">
                                             <label>Nouvelle adresse email</label>
-                                            <input type="email" placeholder="Entrez la nouvelle adresse email">
+                                            <input type="email" name="new_email" placeholder="Entrez la nouvelle adresse email" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
@@ -112,25 +176,26 @@ include 'includes/header.php';
                         <div class="dashboard_password_change">
                             <h6>Changer le Mot de Passe</h6>
                             <p>Un email de confirmation vous sera envoyé une fois la modification effectuée.</p>
-                            <form action="#">
+                            <form action="dashboard_change_password" method="POST">
+                                <input type="hidden" name="cbca_password_update" value="1">
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="dashboard_password_change_input">
                                             <label>Mot de passe actuel</label>
-                                            <input type="password" placeholder="Entrez le mot de passe actuel">
+                                            <input type="password" name="current_password" placeholder="Entrez le mot de passe actuel" required>
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6">
                                         <div class="dashboard_password_change_input">
                                             <label>Nouveau mot de passe</label>
-                                            <input type="password" placeholder="Entrez le nouveau mot de passe">
+                                            <input type="password" name="new_password" placeholder="Entrez le nouveau mot de passe" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-12">
                                         <div class="dashboard_password_change_input">
                                             <label>Confirmer le mot de passe</label>
-                                            <input type="password" placeholder="Confirmez le nouveau mot de passe">
+                                            <input type="password" name="confirm_password" placeholder="Confirmez le nouveau mot de passe" required>
                                         </div>
                                     </div>
                                     <div class="col-xl-12">

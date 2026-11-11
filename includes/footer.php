@@ -106,8 +106,13 @@
                     <div class="col-lg-3 col-md-6">
                         <div class="footer_newsletter">
                             <h3>Newsletter</h3>
-                            <form>
-                                <input type="email" placeholder="Votre adresse email" />
+                            <?php if (!empty($newsletterNotice)): ?>
+                                <div class="alert alert-success py-2 px-3 mb-2" style="font-size: 13px;">
+                                    <?php echo htmlspecialchars($newsletterNotice); ?>
+                                </div>
+                            <?php endif; ?>
+                            <form method="POST" action="">
+                                <input type="email" name="cbca_newsletter_email" placeholder="Votre adresse email" required />
                                 <button type="submit">
                                     <i class="far fa-paper-plane"></i>
                                 </button>

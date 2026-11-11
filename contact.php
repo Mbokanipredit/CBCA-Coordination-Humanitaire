@@ -1,4 +1,42 @@
 <?php
+require_once __DIR__ . '/includes/db.php';
+
+$contactSuccess = null;
+$contactError = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cbca_contact_submit'])) {
+    $fullName = trim($_POST['full_name'] ?? '');
+    $email    = trim($_POST['email'] ?? '');
+    $phone    = trim($_POST['phone'] ?? '');
+    $subject  = trim($_POST['subject'] ?? '');
+    $message  = trim($_POST['message'] ?? '');
+
+    if ($fullName === '' || $email === '' || $message === '') {
+        $contactError = 'Veuillez remplir tous les champs obligatoires (Nom, Email et Message).';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $contactError = 'Veuillez saisir une adresse email valide.';
+    } else {
+        if ($pdo) {
+            try {
+                $stmt = $pdo->prepare('
+                    INSERT INTO `contact_messages` (`full_name`, `email`, `phone`, `subject`, `message`)
+                    VALUES (:full_name, :email, :phone, :subject, :message)
+                ');
+                $stmt->execute([
+                    ':full_name' => $fullName,
+                    ':email'     => $email,
+                    ':phone'     => $phone !== '' ? $phone : null,
+                    ':subject'   => $subject !== '' ? $subject : null,
+                    ':message'   => $message,
+                ]);
+            } catch (Throwable $e) {
+                error_log('[CBCA Contact] ' . $e->getMessage());
+            }
+        }
+        $contactSuccess = 'Merci ' . htmlspecialchars($fullName) . ' ! Votre message a bien été envoyé à la Coordination Humanitaire CBCA.';
+    }
+}
+
 $pageTitle = "Contact - CBCA";
 include 'includes/head.php';
 include 'includes/header.php';
@@ -74,46 +112,53 @@ include 'includes/header.php';
                 </div>
             </div>
             <div class="contact_form">
-                <form action="#">
+                <form action="contact" method="POST">
+                    <input type="hidden" name="cbca_contact_submit" value="1">
                     <div class="row">
                         <div class="col-xl-7 col-lg-6">
                             <h3>Restez en contact avec nous</h3>
+                            <?php if ($contactSuccess): ?>
+                                <div class="alert alert-success mb-3"><?php echo $contactSuccess; ?></div>
+                            <?php endif; ?>
+                            <?php if ($contactError): ?>
+                                <div class="alert alert-danger mb-3"><?php echo htmlspecialchars($contactError); ?></div>
+                            <?php endif; ?>
                             <div class=" row">
                                 <div class="col-xl-6 col-md-6">
                                     <div class="contact_input">
-                                        <label>Votre Nom</label>
-                                        <input type="text" placeholder="Votre nom complet">
+                                        <label>Votre Nom *</label>
+                                        <input type="text" name="full_name" placeholder="Votre nom complet" required>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-md-6">
                                     <div class="contact_input">
-                                        <label>Votre Email</label>
-                                        <input type="email" placeholder="Adresse email">
+                                        <label>Votre Email *</label>
+                                        <input type="email" name="email" placeholder="Adresse email" required>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-md-6">
                                     <div class="contact_input">
                                         <label>Votre Téléphone</label>
-                                        <input type="text" placeholder="Numéro de téléphone">
+                                        <input type="text" name="phone" placeholder="Numéro de téléphone">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-md-6">
                                     <div class="contact_input">
                                         <label>Sujet</label>
-                                        <input type="text" placeholder="Objet de votre message">
+                                        <input type="text" name="subject" placeholder="Objet de votre message">
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
                                     <div class="contact_input">
-                                        <label>Message</label>
-                                        <textarea rows="5" placeholder="Écrivez votre message ici..."></textarea>
+                                        <label>Message *</label>
+                                        <textarea rows="5" name="message" placeholder="Écrivez votre message ici..." required></textarea>
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
                                     <div class="contact_input mt_10">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckDefault">
+                                            <input class="form-check-input" type="checkbox" name="privacy_accepted" value="1"
+                                                id="flexCheckDefault" required>
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 J'accepte la politique de confidentialité de la CBCA *
                                             </label>

@@ -1,4 +1,8 @@
 <?php
+require_once __DIR__ . '/includes/db.php';
+$currentUser = cbca_get_current_user($pdo);
+$fullName = trim($currentUser['first_name'] . ' ' . $currentUser['last_name']);
+
 $pageTitle = "CBCA - Coordination Humanitaire";
 include 'includes/head.php';
 include 'includes/header.php';
@@ -36,9 +40,9 @@ include 'includes/header.php';
                                 <img src="images/single_topic_sidebar_banner.webp" alt="img" class="img-fluid">
                             </div>
                             <div class="img">
-                                <img src="images/dashboard_profile_img.webp" alt="profile" class="img-fluid w-100">
+                                <img src="<?php echo htmlspecialchars($currentUser['avatar'] ?: 'images/dashboard_profile_img.webp'); ?>" alt="profile" class="img-fluid w-100">
                             </div>
-                            <h4>Jean Kabanga</h4>
+                            <h4><?php echo htmlspecialchars($fullName); ?></h4>
                         </div>
                         <ul class="dashboard_sidebar_menu">
                             <li>
@@ -66,7 +70,7 @@ include 'includes/header.php';
                                 </a>
                             </li>
                             <li>
-                                <a href="sign_in">
+                                <a href="sign_in?logout=1">
                                     <div class="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -95,20 +99,20 @@ include 'includes/header.php';
                         <div class="dashboard_profile">
                             <div class="text ms-0">
                                 <h6>À propos</h6>
-                                <p>Acteur humanitaire engagé au sein de la Coordination Humanitaire CBCA pour le soutien des populations vulnérables et la résilience communautaire au Nord-Kivu.</p>
+                                <p><?php echo htmlspecialchars($currentUser['bio']); ?></p>
                             </div>
                         </div>
 
                         <ul class="dashboard_profile_info">
-                            <li><span>Nom :</span>Jean Kabanga</li>
-                            <li><span>Genre :</span>Masculin</li>
-                            <li><span>Téléphone :</span>+243 999 717 524</li>
-                            <li><span>Date de naissance :</span>15 Juin 1988</li>
-                            <li><span>Email :</span>coordhum.cbca@gmail.com</li>
-                            <li><span>Code Postal :</span>6001</li>
-                            <li><span>Ville :</span>Goma</li>
-                            <li><span>Pays :</span>R.D. Congo</li>
-                            <li><span>Adresse :</span>Quartier Katindo, Goma, Nord-Kivu</li>
+                            <li><span>Nom :</span><?php echo htmlspecialchars($fullName); ?></li>
+                            <li><span>Genre :</span><?php echo htmlspecialchars($currentUser['gender']); ?></li>
+                            <li><span>Téléphone :</span><?php echo htmlspecialchars($currentUser['phone']); ?></li>
+                            <li><span>Date de naissance :</span><?php echo htmlspecialchars($currentUser['birth_date']); ?></li>
+                            <li><span>Email :</span><?php echo htmlspecialchars($currentUser['email']); ?></li>
+                            <li><span>Code Postal :</span><?php echo htmlspecialchars($currentUser['postal_code']); ?></li>
+                            <li><span>Ville :</span><?php echo htmlspecialchars($currentUser['city']); ?></li>
+                            <li><span>Pays :</span><?php echo htmlspecialchars($currentUser['country']); ?></li>
+                            <li><span>Adresse :</span><?php echo htmlspecialchars($currentUser['address']); ?></li>
                         </ul>
                     </div>
                 </div>

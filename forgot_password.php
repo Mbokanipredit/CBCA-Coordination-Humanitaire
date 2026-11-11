@@ -1,4 +1,18 @@
 <?php
+require_once __DIR__ . '/includes/db.php';
+
+$forgotSuccess = null;
+$forgotError = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cbca_forgot_submit'])) {
+    $email = trim($_POST['email'] ?? '');
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $forgotError = 'Veuillez saisir une adresse email valide.';
+    } else {
+        $forgotSuccess = 'Si un compte est associé à ' . htmlspecialchars($email) . ', les instructions de réinitialisation ont été envoyées.';
+    }
+}
+
 $pageTitle = "CBCA - Coordination Humanitaire";
 include 'includes/head.php';
 include 'includes/header.php';
@@ -38,8 +52,15 @@ include 'includes/header.php';
                     <div class="sign_up_contant">
                         <h2>Mot de passe oublié ?</h2>
                         <p>Entrez votre adresse email ci-dessous pour réinitialiser votre mot de passe.</p>
-                        <form action="#" class="login_form">
-                            <input type="email" placeholder="Adresse email">
+                        <?php if ($forgotSuccess): ?>
+                            <div class="alert alert-success mb-3"><?php echo $forgotSuccess; ?></div>
+                        <?php endif; ?>
+                        <?php if ($forgotError): ?>
+                            <div class="alert alert-danger mb-3"><?php echo htmlspecialchars($forgotError); ?></div>
+                        <?php endif; ?>
+                        <form action="forgot_password" method="POST" class="login_form">
+                            <input type="hidden" name="cbca_forgot_submit" value="1">
+                            <input type="email" name="email" placeholder="Adresse email" required>
                             <button type="submit" class="common_btn">Envoyer l'instruction</button>
                         </form>
                     </div>

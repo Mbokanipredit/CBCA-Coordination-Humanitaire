@@ -1,4 +1,67 @@
 <?php
+require_once __DIR__ . '/includes/db.php';
+
+$profileSuccess = null;
+$profileError = null;
+$currentUser = cbca_get_current_user($pdo);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cbca_profile_update'])) {
+    $firstName  = trim($_POST['first_name'] ?? $currentUser['first_name']);
+    $lastName   = trim($_POST['last_name'] ?? $currentUser['last_name']);
+    $phone      = trim($_POST['phone'] ?? $currentUser['phone']);
+    $email      = trim($_POST['email'] ?? $currentUser['email']);
+    $country    = trim($_POST['country'] ?? $currentUser['country']);
+    $city       = trim($_POST['city'] ?? $currentUser['city']);
+    $postalCode = trim($_POST['postal_code'] ?? $currentUser['postal_code']);
+    $address    = trim($_POST['address'] ?? $currentUser['address']);
+    $bio        = trim($_POST['bio'] ?? $currentUser['bio']);
+
+    if ($firstName === '' || $email === '') {
+        $profileError = 'Le prénom et l\'adresse email sont obligatoires.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $profileError = 'Veuillez saisir une adresse email valide.';
+    } else {
+        if ($pdo) {
+            try {
+                $stmt = $pdo->prepare('
+                    UPDATE `users`
+                    SET `first_name` = :first_name,
+                        `last_name` = :last_name,
+                        `phone` = :phone,
+                        `email` = :email,
+                        `country` = :country,
+                        `city` = :city,
+                        `postal_code` = :postal_code,
+                        `address` = :address,
+                        `bio` = :bio
+                    WHERE `id` = :id
+                ');
+                $stmt->execute([
+                    ':first_name'  => $firstName,
+                    ':last_name'   => $lastName,
+                    ':phone'       => $phone,
+                    ':email'       => $email,
+                    ':country'     => $country,
+                    ':city'        => $city,
+                    ':postal_code' => $postalCode,
+                    ':address'     => $address,
+                    ':bio'         => $bio,
+                    ':id'          => (int) $currentUser['id'],
+                ]);
+                $currentUser = cbca_get_current_user($pdo);
+                $profileSuccess = 'Vos informations de profil ont bien été mises à jour.';
+            } catch (Throwable $e) {
+                error_log('[CBCA Profile Edit] ' . $e->getMessage());
+                $profileError = 'Impossible de mettre à jour le profil : ' . $e->getMessage();
+            }
+        } else {
+            $profileSuccess = 'Vos modifications ont été prises en compte.';
+        }
+    }
+}
+
+$fullName = trim($currentUser['first_name'] . ' ' . $currentUser['last_name']);
+
 $pageTitle = "CBCA - Coordination Humanitaire";
 include 'includes/head.php';
 include 'includes/header.php';
@@ -36,9 +99,9 @@ include 'includes/header.php';
                                 <img src="images/single_topic_sidebar_banner.webp" alt="img" class="img-fluid">
                             </div>
                             <div class="img">
-                                <img src="images/dashboard_profile_img.webp" alt="profile" class="img-fluid w-100">
+                                <img src="<?php echo htmlspecialchars($currentUser['avatar'] ?: 'images/dashboard_profile_img.webp'); ?>" alt="profile" class="img-fluid w-100">
                             </div>
-                            <h4>Jean Kabanga</h4>
+                            <h4><?php echo htmlspecialchars($fullName); ?></h4>
                         </div>
                         <ul class="dashboard_sidebar_menu">
                             <li>
@@ -66,7 +129,7 @@ include 'includes/header.php';
                                 </a>
                             </li>
                             <li>
-                                <a href="sign_in">
+                                <a href="sign_in?logout=1">
                                     <div class="icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -112,40 +175,48 @@ include 'includes/header.php';
                             </div>
                         </div>
 
-                        <form action="#" class="dashboard_profile_update">
+                        <?php if ($profileSuccess): ?>
+                            <div class="alert alert-success mb-3"><?php echo htmlspecialchars($profileSuccess); ?></div>
+                        <?php endif; ?>
+                        <?php if ($profileError): ?>
+                            <div class="alert alert-danger mb-3"><?php echo htmlspecialchars($profileError); ?></div>
+                        <?php endif; ?>
+
+                        <form action="dashboard_profile_edit" method="POST" class="dashboard_profile_update">
+                            <input type="hidden" name="cbca_profile_update" value="1">
                             <div class="row">
                                 <div class="col-xl-6">
                                     <div class="dashboard_profile_update_info">
                                         <label>Prénom</label>
-                                        <input type="text" placeholder="Entrez votre prénom" value="Jean">
+                                        <input type="text" name="first_name" placeholder="Entrez votre prénom" value="<?php echo htmlspecialchars($currentUser['first_name']); ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-xl-6">
                                     <div class="dashboard_profile_update_info">
                                         <label>Nom</label>
-                                        <input type="text" placeholder="Entrez votre nom" value="Kabanga">
+                                        <input type="text" name="last_name" placeholder="Entrez votre nom" value="<?php echo htmlspecialchars($currentUser['last_name']); ?>">
                                     </div>
                                 </div>
                                 <div class="col-xl-6">
                                     <div class="dashboard_profile_update_info">
                                         <label>Téléphone</label>
-                                        <input type="text" placeholder="Entrez votre numéro" value="+243 999 717 524">
+                                        <input type="text" name="phone" placeholder="Entrez votre numéro" value="<?php echo htmlspecialchars($currentUser['phone']); ?>">
                                     </div>
                                 </div>
                                 <div class="col-xl-6">
                                     <div class="dashboard_profile_update_info">
                                         <label>Email</label>
-                                        <input type="email" placeholder="Entrez votre email" value="coordhum.cbca@gmail.com">
+                                        <input type="email" name="email" placeholder="Entrez votre email" value="<?php echo htmlspecialchars($currentUser['email']); ?>" required>
                                     </div>
                                 </div>
                                 <div class="col-xl-6">
                                     <div class="dashboard_profile_update_info">
                                         <label>Pays</label>
                                         <select class="select_2" name="country">
-                                            <option value="RDC">République Démocratique du Congo</option>
-                                            <option value="RW">Rwanda</option>
-                                            <option value="UG">Ouganda</option>
-                                            <option value="BI">Burundi</option>
+                                            <option value="RDC" <?php echo $currentUser['country'] === 'RDC' ? 'selected' : ''; ?>>République Démocratique du Congo</option>
+                                            <option value="RW" <?php echo $currentUser['country'] === 'RW' ? 'selected' : ''; ?>>Rwanda</option>
+                                            <option value="UG" <?php echo $currentUser['country'] === 'UG' ? 'selected' : ''; ?>>Ouganda</option>
+                                            <option value="BI" <?php echo $currentUser['country'] === 'BI' ? 'selected' : ''; ?>>Burundi</option>
                                         </select>
                                     </div>
                                 </div>
@@ -153,30 +224,30 @@ include 'includes/header.php';
                                     <div class="dashboard_profile_update_info">
                                         <label>Ville</label>
                                         <select class="select_2" name="city">
-                                            <option value="Goma">Goma</option>
-                                            <option value="Bukavu">Bukavu</option>
-                                            <option value="Beni">Beni</option>
-                                            <option value="Butembo">Butembo</option>
-                                            <option value="Kinshasa">Kinshasa</option>
+                                            <option value="Goma" <?php echo $currentUser['city'] === 'Goma' ? 'selected' : ''; ?>>Goma</option>
+                                            <option value="Bukavu" <?php echo $currentUser['city'] === 'Bukavu' ? 'selected' : ''; ?>>Bukavu</option>
+                                            <option value="Beni" <?php echo $currentUser['city'] === 'Beni' ? 'selected' : ''; ?>>Beni</option>
+                                            <option value="Butembo" <?php echo $currentUser['city'] === 'Butembo' ? 'selected' : ''; ?>>Butembo</option>
+                                            <option value="Kinshasa" <?php echo $currentUser['city'] === 'Kinshasa' ? 'selected' : ''; ?>>Kinshasa</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-xl-6">
                                     <div class="dashboard_profile_update_info">
                                         <label>Code Postal</label>
-                                        <input type="text" placeholder="Code postal" value="6001">
+                                        <input type="text" name="postal_code" placeholder="Code postal" value="<?php echo htmlspecialchars($currentUser['postal_code']); ?>">
                                     </div>
                                 </div>
                                 <div class="col-xl-6">
                                     <div class="dashboard_profile_update_info">
                                         <label>Adresse</label>
-                                        <input type="text" placeholder="Votre adresse" value="Quartier Katindo, Goma, Nord-Kivu">
+                                        <input type="text" name="address" placeholder="Votre adresse" value="<?php echo htmlspecialchars($currentUser['address']); ?>">
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
                                     <div class="dashboard_profile_update_info">
                                         <label>À propos de moi</label>
-                                        <textarea rows="5" placeholder="Décrivez brièvement votre rôle ou votre engagement...">Acteur humanitaire engagé au sein de la Coordination Humanitaire CBCA.</textarea>
+                                        <textarea rows="5" name="bio" placeholder="Décrivez brièvement votre rôle ou votre engagement..."><?php echo htmlspecialchars($currentUser['bio']); ?></textarea>
                                     </div>
                                 </div>
                                 <div class="col-xl-12">
